@@ -4,6 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -122,5 +125,11 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-4xl font-bold;
   }
 }
