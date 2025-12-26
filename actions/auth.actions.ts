@@ -2,11 +2,14 @@
 
 import { signIn } from "@/lib/auth";
 import { AuthError } from "next-auth";
-import { signInSchema } from "@/lib/schemas/auth";
+import { loginSchema, registerSchema } from "@/lib/schemas/auth";
+import User from "@/models/user";
+import connectDb from "@/lib/db";
+import { redirect } from "next/navigation";
 
 export const authenticate = async (prevState: unknown, formData: FormData) => {
   const data = Object.fromEntries(formData);
-  const result = signInSchema.safeParse(data);
+  const result = loginSchema.safeParse(data);
 
   if (!result.success) {
     return {
@@ -34,3 +37,31 @@ export const authenticate = async (prevState: unknown, formData: FormData) => {
     throw e;
   }
 };
+
+export async function register(pervState: unknown, formData: FormData) {
+  await connectDb();
+
+  const data = Object.fromEntries(formData);
+  const result = registerSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  const validatedData = result.data;
+
+  if (validatedData.password !== validatedData.confirm_password) {
+    return {
+      error: "Passwords didn't match.",
+    };
+  }
+
+  delete validatedData.confirm_password;
+
+  const newUser = new User(validatedData);
+  await newUser.save();
+
+  return redirect("/login");
+}

@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { users } from "./constants";
+import User from "@/models/user";
+import { compareHashedPassword } from "./helpers";
+import connectDb from "./db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -14,11 +16,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       },
       authorize: async (credentials) => {
+        await connectDb();
         const { email, password } = credentials;
-        const user = users.find((u) => u.email === email);
+        const user = await User.findOne({ email: email });
 
         if (!user) return null;
-        if (user && user.password !== password) return null;
+
+        if (!(await compareHashedPassword(password as string, user.password))) {
+          return null;
+        }
 
         return user;
       },
