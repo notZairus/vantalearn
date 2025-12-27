@@ -1,7 +1,9 @@
-export default function Page() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center">
-      <h1>Landing Page</h1>
-    </div>
-  );
+"use server";
+
+import { logout } from "@/actions/auth.actions";
+
+async function page() {
+  return <div onClick={logout}>Logout</div>;
 }
+
+export default page;

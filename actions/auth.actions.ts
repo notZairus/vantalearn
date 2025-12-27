@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { AuthError } from "next-auth";
 import { loginSchema, registerSchema } from "@/lib/schemas/auth";
 import User from "@/models/user";
@@ -20,7 +20,7 @@ export const authenticate = async (prevState: unknown, formData: FormData) => {
   try {
     await signIn("credentials", {
       ...result.data,
-      redirectTo: "/",
+      redirectTo: "/dashboard",
     });
   } catch (e) {
     if (e instanceof AuthError) {
@@ -64,4 +64,8 @@ export async function register(pervState: unknown, formData: FormData) {
   await newUser.save();
 
   return redirect("/login");
+}
+
+export async function logout() {
+  await signOut({ redirect: true, redirectTo: "/login" });
 }

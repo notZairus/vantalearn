@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { User } from "@hugeicons/core-free-icons";
 
 const UserModel = new mongoose.Schema(
   {
@@ -42,5 +43,17 @@ UserModel.pre("save", async function () {
   const hashed = await bcrypt.hash(this.password, salt);
   this.password = hashed;
 });
+
+UserModel.methods.comparePassword = function (plainPassword: string) {
+  return bcrypt.compareSync(plainPassword, this.password);
+};
+
+UserModel.methods.getFullName = function () {
+  if (!this.middleName) {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
+  return `${this.firstName} ${this.middleName} ${this.lastName}`;
+};
 
 export default mongoose.models.User || mongoose.model("User", UserModel);

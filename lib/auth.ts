@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import User from "@/models/user";
-import { compareHashedPassword } from "./helpers";
 import connectDb from "./db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -22,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (!user) return null;
 
-        if (!(await compareHashedPassword(password as string, user.password))) {
+        if (!user.comparePassword(password as string)) {
           return null;
         }
 
