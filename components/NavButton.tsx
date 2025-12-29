@@ -19,7 +19,7 @@ const NavButton = ({
   return (
     <Link href={href} className="w-full cursor-pointer">
       <Button
-        className={`py-3 cursor-pointer w-full flex items-center gap-4 px-8 transition-all duration-300 ${
+        className={`py-3 cursor-pointer bg-sidebar w-full flex items-center gap-4 px-8 transition-all duration-300 ${
           path.startsWith(href)
             ? "border-l-8 border-white bg-foreground/10"
             : ""

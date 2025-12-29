@@ -3,8 +3,10 @@
 import NavButton from "./NavButton";
 import {
   DashboardSquare02Icon,
-  Blockchain06Icon,
+  Brain02Icon,
+  Profile02Icon,
 } from "@hugeicons/core-free-icons";
+import SidebarColButton from "./SidebarColButton";
 
 const navs = [
   {
@@ -12,10 +14,48 @@ const navs = [
     href: "/dashboard",
     icon: DashboardSquare02Icon,
   },
+];
+
+const collapsibleNavs = [
   {
-    title: "Projects",
-    href: "/projects",
-    icon: Blockchain06Icon,
+    title: "Skills",
+    icon: Brain02Icon,
+    links: [
+      {
+        title: "analyze",
+        href: "/skills/analyze",
+      },
+      {
+        title: "learn",
+        href: "/skills/learn",
+      },
+      {
+        title: "recommend",
+        href: "/skills/recommend",
+      },
+      {
+        title: "acquired",
+        href: "/skills/acquired",
+      },
+    ],
+  },
+  {
+    title: "Portfolio",
+    icon: Profile02Icon,
+    links: [
+      {
+        title: "about",
+        href: "/skills/analyze",
+      },
+      {
+        title: "projects",
+        href: "/skills/learn",
+      },
+      {
+        title: "contact",
+        href: "/skills/recommend",
+      },
+    ],
   },
 ];
 
@@ -28,6 +68,14 @@ const SidebarNav = () => {
           href={nav.href}
           icon={nav.icon}
           title={nav.title}
+        />
+      ))}
+      {collapsibleNavs.map((nav) => (
+        <SidebarColButton
+          key={nav.title}
+          icon={nav.icon}
+          title={nav.title}
+          links={nav.links}
         />
       ))}
     </nav>

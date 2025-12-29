@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PortfoliX",
+  title: "VantaLearn",
   description: "AI generated Portfolio Generator by Zairus V. Bermillo.",
 };
 
