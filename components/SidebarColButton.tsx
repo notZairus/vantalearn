@@ -7,12 +7,20 @@ import {
 } from "@/components/ui/collapsible";
 import { Button } from "@base-ui/react";
 import React from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
+import { HugeiconsIcon, IconSvgElement } from "@hugeicons/react";
 import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const SidebarColButton = ({ title, icon, links }) => {
+const SidebarColButton = ({
+  title,
+  icon,
+  links,
+}: {
+  title: string;
+  icon: IconSvgElement;
+  links: string;
+}) => {
   const [isOpen, setIsOpen] = React.useState(true);
   const path = usePathname();
 

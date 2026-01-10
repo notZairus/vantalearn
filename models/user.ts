@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { User } from "@hugeicons/core-free-icons";
 
-const UserModel = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -36,7 +35,7 @@ const UserModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-UserModel.pre("save", async function () {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
   const salt = await bcrypt.genSalt(10);
@@ -44,11 +43,11 @@ UserModel.pre("save", async function () {
   this.password = hashed;
 });
 
-UserModel.methods.comparePassword = function (plainPassword: string) {
+userSchema.methods.comparePassword = function (plainPassword: string) {
   return bcrypt.compareSync(plainPassword, this.password);
 };
 
-UserModel.methods.getFullName = function () {
+userSchema.methods.getFullName = function () {
   if (!this.middleName) {
     return `${this.firstName} ${this.lastName}`;
   }
@@ -56,4 +55,4 @@ UserModel.methods.getFullName = function () {
   return `${this.firstName} ${this.middleName} ${this.lastName}`;
 };
 
-export default mongoose.models.User || mongoose.model("User", UserModel);
+export default mongoose.models.User || mongoose.model("User", userSchema);
